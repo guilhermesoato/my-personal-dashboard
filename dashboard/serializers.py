@@ -26,7 +26,6 @@ class QuoteDetailSerializer(serializers.Serializer):
     name = serializers.CharField()
     bid = serializers.CharField() # 'bid' é o valor da cotação
 
-
 # --- O SERIALIZER PRINCIPAL QUE JUNTA TUDO ---
 class DashboardDataSerializer(serializers.Serializer):
     weather = WeatherSerializer(required=False, allow_null=True)

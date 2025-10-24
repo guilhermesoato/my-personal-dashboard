@@ -2,11 +2,12 @@ import requests
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import DashboardDataSerializer # Importamos nosso novo serializer
+from rest_framework.permissions import IsAuthenticated
+from .serializers import DashboardDataSerializer
 
 class DashboardAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
-        # A lógica de busca de dados é a mesma de antes
         weather_data = None
         try:
             city = 'Brasilia'
@@ -41,16 +42,12 @@ class DashboardAPIView(APIView):
         if news_data and 'articles' in news_data:
             articles_list = news_data['articles']
 
-
-        # Juntamos todos os dados em um único dicionário
         combined_data = {
             'weather': weather_data,
             'news': articles_list,
             'quotes': quotes_data,
         }
 
-        # Usamos o serializer para validar e estruturar os dados
         serializer = DashboardDataSerializer(instance=combined_data)
 
-        # Retornamos a resposta JSON
         return Response(serializer.data)
